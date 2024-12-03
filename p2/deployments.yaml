@@ -22,6 +22,21 @@ spec:
 
 ---
 
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-one-service
+spec:
+  selector:
+    app.kubernetes.io/name: app-one
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP
+
+---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -46,6 +61,21 @@ spec:
 
 ---
 
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-two-service
+spec:
+  selector:
+    app.kubernetes.io/name: app-two
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP
+
+---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -67,3 +97,58 @@ spec:
         image: flambyh/iot:app-three
         ports:
         - containerPort: 80
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-three-service
+spec:
+  selector:
+    app.kubernetes.io/name: app-three
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-wildcard-host
+spec:
+  rules:
+  - host: "app1.com"
+    http:
+      paths:
+      - pathType: Exact
+        path: "/"
+        backend:
+          service:
+            name: app-one-service
+            port:
+              number: 80
+  - host: "app2.com"
+    http:
+      paths:
+      - pathType: Exact
+        path: "/"
+        backend:
+          service:
+            name: app-two-service
+            port:
+              number: 80
+  - host: "app3.com"
+    http:
+      paths:
+      - pathType: Exact
+        path: "/"
+        backend:
+          service:
+            name: app-three-service
+            port:
+              number: 80
+            
