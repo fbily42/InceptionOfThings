@@ -28,7 +28,7 @@ metadata:
   name: app-one-service
 spec:
   selector:
-    app.kubernetes.io/name: app-one
+    app: app-one
   ports:
     - protocol: TCP
       port: 80
@@ -67,7 +67,7 @@ metadata:
   name: app-two-service
 spec:
   selector:
-    app.kubernetes.io/name: app-two
+    app: app-two
   ports:
     - protocol: TCP
       port: 80
@@ -106,7 +106,7 @@ metadata:
   name: app-three-service
 spec:
   selector:
-    app.kubernetes.io/name: app-three
+    app: app-three
   ports:
     - protocol: TCP
       port: 80
@@ -118,13 +118,14 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ingress-wildcard-host
+  name: my-ingress
 spec:
+  ingressClassName: traefik
   rules:
   - host: "app1.com"
     http:
       paths:
-      - pathType: Exact
+      - pathType: Prefix
         path: "/"
         backend:
           service:
@@ -134,7 +135,7 @@ spec:
   - host: "app2.com"
     http:
       paths:
-      - pathType: Exact
+      - pathType: Prefix
         path: "/"
         backend:
           service:
@@ -144,7 +145,7 @@ spec:
   - host: "app3.com"
     http:
       paths:
-      - pathType: Exact
+      - pathType: Prefix
         path: "/"
         backend:
           service:
