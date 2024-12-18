@@ -26,4 +26,4 @@ sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plug
 echo -e "$YELLOW K3S INSTALLATION $RESET"
 sudo curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server --node-ip 192.168.56.110 --flannel-iface eth1 --docker" sh -
 echo -e "$GREEN SERVER CONFIGURATION DONE $RESET"
-sudo kubectl apply -f /vagrant/deployments.yaml
+sudo kubectl apply -f /vagrant/config/deployments.yaml
